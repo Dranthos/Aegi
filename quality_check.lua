@@ -392,7 +392,7 @@ tdura=0		tlength=0	tcps=0      mon=0 	tarta=0		mont=0 		monn=0 	inter=0 	err=0  
 
 	-- Busca tartamudeos
 	if res["tartamudeos"] then
-	if text:match("%u%-%l")
+	if text:match("[^%a]%u%-%l")
 	then effect=effect.." [tartamudeo no guay]" tarta=tarta+1 end
 	end
 
@@ -441,12 +441,12 @@ tdura=0		tlength=0	tcps=0      mon=0 	tarta=0		mont=0 		monn=0 	inter=0 	err=0  
 
 	-- busca errores varios
 	if res["errores"] then
-		if text:match("Ex%-")
-		or text:match("ex%-")
+		if text:match("[Ee]x%-")
 			then effect=effect.." [Ex-... no existe mamón]" err=err+1 end
-		if text:match("Super%-")
-		or text:match("super%-")
+		if text:match("[Ss]uper%-")
 			then effect=effect.." [Super-... no se usa así]" err=err+1 end
+    if text:match("[^%a][Aa]%sdrede[^%a]")
+      then effect=effect.." [Adrede va junto, melón]" err=err+1 end
 	end
 
 	-- check for disjointed tags
