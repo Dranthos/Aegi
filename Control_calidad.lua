@@ -12,10 +12,6 @@ dis=0		over=0		gap=0		dspace=0	dword=0		outside=0	op=0		ed=0		sign=0
 italics=0	lbreak=0	hororifix=0	zeroes=0	badita=0	dotdot=0	comfail=0	oneframe=0	trf=0
 zerot=0		halfsek=0	readableh=0	unreadable=0	saurosis=0	dupli=0		negadur=0	empty=0		orgline=0
 tdura=0		tlength=0	tcps=0      mon=0 	tarta=0		mont=0 		monn=0 	inter=0 	err=0  interr=0 	report=""	styles=""	misstyles=""	fontlist=""	fontable={} 
-	interabiertas=0
-	intercerradas=0
-	exclaabiertas=0
-	exclacerradas=0
 
   if pressed=="Limpiar QC" then
     for i=1, #subs do
@@ -208,6 +204,11 @@ tdura=0		tlength=0	tcps=0      mon=0 	tarta=0		mont=0 		monn=0 	inter=0 	err=0  
 	--comprueba apertura y cierre de signos
 	
 	if res["apertura"] then
+
+	interabiertas=0
+	intercerradas=0
+	exclaabiertas=0
+	exclacerradas=0
 		
 		for lol in visible:gmatch("%¿") do
 			interabiertas=interabiertas+1 end
@@ -229,6 +230,11 @@ tdura=0		tlength=0	tcps=0      mon=0 	tarta=0		mont=0 		monn=0 	inter=0 	err=0  
 			then effect=effect.. " [Exclamación sin cerrar]" interr=interr+1 end
 		if exclaabiertas<exclacerradas
 			then effect=effect.. " [Exclamación sin abrir]" interr=interr+1 end
+
+	interabiertas=0
+	intercerradas=0
+	exclaabiertas=0
+	exclacerradas=0
 
 	end	
 
