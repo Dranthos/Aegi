@@ -17,34 +17,53 @@ tdura=0		tlength=0	tcps=0      mon=0 	tarta=0		mont=0 		monn=0 	inter=0 	err=0  
 	exclaabiertas=0
 	exclacerradas=0
 
-  if pressed=="Clear QC" then
+  if pressed=="Limpiar QC" then
     for i=1, #subs do
         if subs[i].class=="dialogue" then
             local line=subs[i]
 		line.actor=line.actor
-		:gsub("%s%?%.%.%.timer pls","")
-		:gsub("%s%?%[time gap %d+ms%]","")
-		:gsub("%s%?%[overlap %d+ms%]","")
-		:gsub("%s%?%[negative duration%]","")
-		:gsub("%s%?%[zero time%]","")
+		:gsub("%sPero que haces%.%.%.","")
+		:gsub("%s%[salto de %d+ms%]","")
+		:gsub("%s%[solapamiento de %d+ms%]","")
+		:gsub("%s%[duración negativa%]","")
+		:gsub("%s%[tiempo cero%]","")
 		:gsub("%s%?%[0 time%]","")
 		line.effect=line.effect
-		:gsub("%s%?%[malformed tags%]","")
-		:gsub("%s%?%[disjointed tags%]","")
-		:gsub("%s%?%[redundant tags%]","")
-		:gsub("%s%?%.%.%.sort by time pls","")
-		:gsub("%s%?%[doublespace%]","")
-		:gsub("%s%?%[double word%]","")
-		:gsub("%s%?%[italics fail%]","")
-		:gsub(" {\\Stupid","")
-		:gsub("%s%?%[stupid contractions%]","")
-		:gsub("%s%?%-MISSING BLUR%-","")
+		:gsub("%s%[etiquetas malformadas%]","")
+		:gsub("%s%[etiquetas inconexas%]","")
+		:gsub("%s%[etiquetas redundantes%]","")
+		:gsub("%s%.%.%.ordénalo por tiempo por favor","")
+		:gsub("%s%[doble espacio%]","")
+		:gsub("%s%[letra duplicada%]","")
+		:gsub("%s%[cursiva mal puesta%]","")
+		:gsub("%s%[comentario jodido%]","")
+		:gsub("%s%-FALTA DIFUMINADO%-","")
 		:gsub("%s%?%[%.%.%]","")
-		:gsub("%s%?%[hard to read%%?%?%]","")
-		:gsub("%s%?%[unreadable.*%]","")
-		:gsub("%s%?%[UNREADABLE!+%]","")
-		:gsub("%s%?%[under 0%.5s%]","")
+		:gsub("%s%[¿dificil de leer%?]","")
+		:gsub("%s%[dificil de leer%]","")
+		:gsub("%s%[imposible de leer%]","")
+		:gsub("%s%[¡imposible de leer%!%]","")
+		:gsub("%s%[¡¡imposible de leer%!%!%]","")
+		:gsub("%s%[¡¡NO LO LEE NI DIOS%!%!%]","")
+		:gsub("%s%[por debajo de 0%.5s%]","")
 		:gsub("%s%[Exclamación sin cerrar%]","")
+		:gsub("%s%[monosilabo que NUNCA lleva tilde%]","")
+		:gsub("%s%[¿monosilabo sin tilde%?%]","")
+		:gsub("%s%[¿monosilabo que no necesita tilde%?%]","")
+		:gsub("%s%[tartamudeo no guay%]","")
+		:gsub("%s%[comprobar pronombres interrogativos%]","")
+		:gsub("%s%[¿interrogativos sin tilde%?%]","")
+		:gsub("%s%[Interrogación sin cerrar%]","")
+		:gsub("%s%[Interrogación sin abrir%]","")
+		:gsub("%s%[Exclamación sin cerrar%]","")
+		:gsub("%s%[Exclamación sin abrir%]","")
+		:gsub("%s%[Ex%-%.%.%. no existe mamón%]","")
+		:gsub("%s%[Super%-%.%.%. no se usa así%]","")
+		:gsub("%s%[Adrede va junto, melón%]","")
+		:gsub("%s%[El imperativo del verbo ir es 'idos'%]","")
+		:gsub("%s%[Exclamación sin cerrar%]","")
+		:gsub("%s%[Exclamación sin cerrar%]","")
+
             subs[i]=line
         end
     end
@@ -98,300 +117,58 @@ tdura=0		tlength=0	tcps=0      mon=0 	tarta=0		mont=0 		monn=0 	inter=0 	err=0  
 	-- check if sorted by time
 	if res["sorted"] then
 	if prevline.class=="dialogue" and start<prevstart then
-	    effect=effect.." ...ordénalo por tiempo por favor" sorted=1
+	    effect=effect.."...ordénalo por tiempo por favor" sorted=1
 	end	end
 
       if not line.comment and line.effect~="qcd" then
 	-- check for blur
 	if res["blur"] and def==0 and visible~="" and not text:match("\\blur") and not text:match("\\be") and endt>0 then
 		if res.bloped then  
-		  effect=effect.." -FALTA DIFUMINADO-" mblur=mblur+1
+		  effect=effect.."-FALTA DIFUMINADO-" mblur=mblur+1
 		  if oped==1 then bloped=bloped+1 end
 		else
 		  if oped==0 then effect=effect.." -FALTA DIFUMINADO-" mblur=mblur+1 end
 		end
 	end
 
-	-- check for malformed tags
-	if res["malformed"] then
-	if text:match("{[^}]-\\\\[^}]-}")
-	or text:match("\\}")  
-	or text:match("\\blur%.") 
-	or text:match("\\bord%.") 
-	or text:match("\\shad%.")
-	or text:match("\\alpha[^&\\}]")
-	or text:match("\\alpha&[^H]")
-	or text:match("\\alpha&H%x[^%x]")
-	or text:match("\\alpha&H%x%x[^&]")
-	or text:match("\\[1234]a[^&\\}]")
-	or text:match("\\[1234]a&[^H]")
-	or text:match("\\[1234]c[^&\\}]")
-	or text:match("\\[1234]%?c&[^H]")
-	or text:match("\\[1234]%?c&%x%x%x%x%x%x[^&]")
-	or text:match("{\\[^}]*&&[^}]*}")
-	or parenth~=""
-	then effect=effect.." [etiquetas malformadas]" malf=malf+1 end
-	clrfail=0
-	for clr in text:gmatch("c&H(%x+)&") do
-	if clr:len()~=6 then clrfail=1 end	end
-	if clrfail==1 then effect=effect.." [etiquetas malformadas]" malf=malf+1 end
-	end
 
 -- busca monosilabos que NUNCA llevan tilde
 	if res["monosilabosN"] then
-	if visible:match(" dí ")
-	or visible:match(" dí%.")
-	or visible:match("Dí%.")  
-	or visible:match(" dí!")
-	or visible:match(" dí%?")
-	or visible:match("Dí ")
-	or visible:match("¡Dí ")
-	or visible:match("¿Dí ")
-	or visible:match("¡Dí!")
-	or visible:match("¿Dí%?")  
-	or visible:match(" dí,")
-	or visible:match("Dí,")
-	or visible:match(" dá ")
-	or visible:match(" dá%.")
-	or visible:match("Dá%.")  
-	or visible:match(" dá!")
-	or visible:match(" dá%?")
-	or visible:match("Dá ")
-	or visible:match("¡Dá ")
-	or visible:match("¿Dá ")
-	or visible:match("¡Dá!")
-	or visible:match("¿Dá%?")  
-	or visible:match(" dá,")
-	or visible:match("Dá,")
-	or visible:match(" dió ")
-	or visible:match(" dió%.")
-	or visible:match("Dió%.")  
-	or visible:match(" dió!")
-	or visible:match(" dió%?")
-	or visible:match("Dió ")
-	or visible:match("¡Dió ")
-	or visible:match("¿Dió ")
-	or visible:match("¡Dió!")
-	or visible:match("¿Dió,")
-	or visible:match("Dió,")
-	or visible:match(" ví ")
-	or visible:match(" ví%.")
-	or visible:match("Ví%.")  
-	or visible:match(" ví!")
-	or visible:match(" ví%?")
-	or visible:match("Ví ")
-	or visible:match("¡Ví ")
-	or visible:match("¿Ví ")
-	or visible:match("¡Ví!")
-	or visible:match("¿Ví%?")  
-	or visible:match(" ví,")
-	or visible:match("Ví,")
-	or visible:match(" vá ")
-	or visible:match(" vá%.")
-	or visible:match("vá%.")  
-	or visible:match(" vá!")
-	or visible:match(" vá%?")
-	or visible:match("Vá ")
-	or visible:match("¡Vá ")
-	or visible:match("¿Vá ")
-	or visible:match("¡Vá!")
-	or visible:match("¿Vá%?")  
-	or visible:match(" vá,")
-	or visible:match("Vá,")
-	or visible:match(" vió ")
-	or visible:match(" vió%.")
-	or visible:match("Vió%.")  
-	or visible:match(" vió!")
-	or visible:match(" vió%?")
-	or visible:match("vió ")
-	or visible:match("¡Vió ")
-	or visible:match("¿Vió ")
-	or visible:match("¡Vió!")
-	or visible:match("¿Vió%?")  
-	or visible:match(" vió,")
-	or visible:match("Vió,")
-	or visible:match(" fué ")
-	or visible:match(" fué%.")
-	or visible:match("Fué%.")  
-	or visible:match(" fué!")
-	or visible:match(" fué%?")
-	or visible:match("Fué ")
-	or visible:match("¡Fué ")
-	or visible:match("¿Fué ")
-	or visible:match("¡Fué!")
-	or visible:match("¿Fué%?")  
-	or visible:match(" fué,")
-	or visible:match("Fué,")
-	or visible:match(" fuí ")
-	or visible:match(" fuí%.")
-	or visible:match("Fuí%.")  
-	or visible:match(" fuí!")
-	or visible:match(" fuí%?")
-	or visible:match("Fuí ")
-	or visible:match("¡Fuí ")
-	or visible:match("¿Fuí ")
-	or visible:match("¡Fuí!")
-	or visible:match("¿Fuí%?")  
-	or visible:match(" fuí,")
-	or visible:match("Fuí,")
-	or visible:match(" ní ")
-	or visible:match(" ní%.")
-	or visible:match("Ní%.")  
-	or visible:match(" ní!")
-	or visible:match(" ní%?")
-	or visible:match("Ní ")
-	or visible:match("¡Ní ")
-	or visible:match("¿Ní ")
-	or visible:match("¡Ní!")
-	or visible:match("¿Ní%?")  
-	or visible:match(" ní,")
-	or visible:match("Ní,")
-	or visible:match(" tí ")
-	or visible:match(" tí%.")
-	or visible:match("Tí%.")  
-	or visible:match(" tí!")
-	or visible:match(" tí%?")
-	or visible:match("Tí ")
-	or visible:match("¡Tí ")
-	or visible:match("¿Tí ")
-	or visible:match("¡Tí!")
-	or visible:match("¿Tí%?")  
-	or visible:match(" tí,")
-	or visible:match("Tí,")
+	if visible:match("[^%a][Dd]í[^%a]")
+	or visible:match("[^%a][Dd]á[^%a]")
+	or visible:match("[^%a][Dd]ió[^%a]")
+	or visible:match("[^%a][Dd]ío[^%a]")
+	or visible:match("[^%a][Vv]í[^%a]")
+	or visible:match("[^%a][Vv]á[^%a]")
+	or visible:match("[^%a][Vv]ió[^%a]")
+	or visible:match("[^%a][Vv]ío[^%a]")
+	or visible:match("[^%a][Ff]ué[^%a]")
+	or visible:match("[^%a][Ff]úe[^%a]")
+	or visible:match("[^%a][Ff]uí[^%a]")
+	or visible:match("[^%a][Ff]úi[^%a]")
+	or visible:match("[^%a][Nn]í[^%a]")
+	or visible:match("[^%a][Tt]í[^%a]")
 	or parenth~=""
 	then effect=effect.." [monosilabo que NUNCA lleva tilde]" monn=monn+1 end
 	end
 
 	-- busca monosilabos sin tilde
 	if res["monosilabos"] then
-	if visible:match(" tu ")
-	or visible:match(" tu%.")
-	or visible:match("Tu%.")  
-	or visible:match(" tu!")
-	or visible:match(" tu%?")
-	or visible:match("Tu ")
-	or visible:match("¡Tu ")
-	or visible:match("¿Tu ")
-	or visible:match("¡Tu!")
-	or visible:match("¿Tu%?")  
-	or visible:match(" tu,")
-	or visible:match("Tu,")
-	or visible:match(" mas ")
-	or visible:match(" mas%.")
-	or visible:match("Mas%.")  
-	or visible:match(" mas!")
-	or visible:match(" mas%?")
-	or visible:match("Mas ")
-	or visible:match("¡Mas ")
-	or visible:match("¿Mas ")
-	or visible:match("¡Mas!")
-	or visible:match("¿Mas%?")  
-	or visible:match(" mas,")
-	or visible:match("Mas,")
-	or visible:match(" si ")
-	or visible:match(" si%.")
-	or visible:match("Si%.")  
-	or visible:match(" si!")
-	or visible:match(" si%?")
-	or visible:match("Si ")
-	or visible:match("¡Si ")
-	or visible:match("¿Si ")
-	or visible:match("¡Si!")
-	or visible:match("¿Si%?")  
-	or visible:match(" si,")
-	or visible:match("Si,")
-	or visible:match(" el ")
-	or visible:match(" el%.")
-	or visible:match("El%.")  
-	or visible:match(" el!")
-	or visible:match(" el%?")
-	or visible:match("El ")
-	or visible:match("¡El ")
-	or visible:match("¿El ")
-	or visible:match("¡El!")
-	or visible:match("¿El%?")  
-	or visible:match(" el,")
-	or visible:match("El,")
-	or visible:match(" aun ")
-	or visible:match(" aun%.")
-	or visible:match("Aun%.")  
-	or visible:match(" aun!")
-	or visible:match(" aun%?")
-	or visible:match("Aun ")
-	or visible:match("¡Aun ")
-	or visible:match("¿Aun ")
-	or visible:match("¡Aun!")
-	or visible:match("¿Aun%?")  
-	or visible:match("Aun ")
-	or visible:match(" aun,")
-	or visible:match("Aun,")
+	if visible:match("[^%a][Tt]u[^%a]")
+	or visible:match("[^%a][Mm]as[^%a]")
+	or visible:match("[^%a][Ss]i[^%a]")
+	or visible:match("[^%a][Ee]l[^%a]")
+	or visible:match("[^%a][Aa]un[^%a]")
 	then effect=effect.." [¿monosilabo sin tilde?]" mon=mon+1 end
 	end
 
 	-- busca monosilabos con tilde
 	if res["monosilabost"] then
-	if visible:match(" tú ")
-	or visible:match(" tú%.")
-	or visible:match("Tú%.")  
-	or visible:match(" tú!")
-	or visible:match(" tú%?")
-	or visible:match("Tú ")
-	or visible:match("¡Tú ")
-	or visible:match("¿Tú ")
-	or visible:match("¡Tú!")
-	or visible:match("¿Tú%?")  
-	or visible:match(" tú,")
-	or visible:match("Tú,")
-	or visible:match(" más ")
-	or visible:match(" más%.")
-	or visible:match("Más%.")  
-	or visible:match(" más!")
-	or visible:match(" más%?")
-	or visible:match("Más ")
-	or visible:match("¡Más ")
-	or visible:match("¿Más ")
-	or visible:match("¡Más!")
-	or visible:match("¿Más%?")  
-	or visible:match(" más,")
-	or visible:match("Más,")
-	or visible:match(" sí ")
-	or visible:match(" sí%.")
-	or visible:match("Sí%.")  
-	or visible:match(" sí!")
-	or visible:match(" sí%?")
-	or visible:match("Sí ")
-	or visible:match("¡Sí ")
-	or visible:match("¿Sí ")
-	or visible:match("¡Sí!")
-	or visible:match("¿Sí%?")  
-	or visible:match(" sí,")
-	or visible:match("Sí,")
-	or visible:match(" él ")
-	or visible:match(" él%.")
-	or visible:match("Él%.")  
-	or visible:match(" él!")
-	or visible:match(" él%?")
-	or visible:match("Él ")
-	or visible:match("¡Él ")
-	or visible:match("¿Él ")
-	or visible:match("¡Él!")
-	or visible:match("¿Él%?")  
-	or visible:match("Él ")
-	or visible:match(" el,")
-	or visible:match("El,")
-	or visible:match(" aún ")
-	or visible:match(" aún%.")
-	or visible:match("Aún%.")  
-	or visible:match(" aún!")
-	or visible:match(" aún%?")
-	or visible:match("Aún ")
-	or visible:match("¡Aún ")
-	or visible:match("¿Aún ")
-	or visible:match("¡Aún!")
-	or visible:match("¿Aún%?")  
-	or visible:match("Aún ")
-	or visible:match(" aún,")
-	or visible:match("Aún,")
+	if visible:match("[^%a][Tt]ú[^%a]")
+	or visible:match("[^%a][Mm]ás[^%a]")
+	or visible:match("[^%a][Ss]í[^%a]")
+	or visible:match("[^%a][Éé]l[^%a]")
+	or visible:match("[^%a][Aa]ún[^%a]")
 	then effect=effect.." [¿monosilabo que no necesita tilde?]" mont=mont+1 end
 	end
 
@@ -430,8 +207,6 @@ tdura=0		tlength=0	tcps=0      mon=0 	tarta=0		mont=0 		monn=0 	inter=0 	err=0  
 
 	--comprueba apertura y cierre de signos
 	
-
-
 	if res["apertura"] then
 		
 		for lol in visible:gmatch("%¿") do
@@ -474,8 +249,29 @@ tdura=0		tlength=0	tcps=0      mon=0 	tarta=0		mont=0 		monn=0 	inter=0 	err=0  
 
 	end
 
-	-- check for disjointed tags
-	if res["disjointed"] then
+	-- busca etiquetas malformadas o inconexas
+	if res["malformed"] then
+	if text:match("{[^}]-\\\\[^}]-}")
+	or text:match("\\}")  
+	or text:match("\\blur%.") 
+	or text:match("\\bord%.") 
+	or text:match("\\shad%.")
+	or text:match("\\alpha[^&\\}]")
+	or text:match("\\alpha&[^H]")
+	or text:match("\\alpha&H%x[^%x]")
+	or text:match("\\alpha&H%x%x[^&]")
+	or text:match("\\[1234]a[^&\\}]")
+	or text:match("\\[1234]a&[^H]")
+	or text:match("\\[1234]c[^&\\}]")
+	or text:match("\\[1234]%?c&[^H]")
+	or text:match("\\[1234]%?c&%x%x%x%x%x%x[^&]")
+	or text:match("{\\[^}]*&&[^}]*}")
+	or parenth~=""
+	then effect=effect.." [etiquetas malformadas]" malf=malf+1 end
+	clrfail=0
+	for clr in text:gmatch("c&H(%x+)&") do
+	if clr:len()~=6 then clrfail=1 end	end
+	if clrfail==1 then effect=effect.." [etiqueta de color mal puesta]" malf=malf+1 end
 	if text:match("{\\[^}]*}{\\[^}]*}")
 	then effect=effect.." [etiquetas inconexas]" dis=dis+1 end
 	end
@@ -503,11 +299,11 @@ tdura=0		tlength=0	tcps=0      mon=0 	tarta=0		mont=0 		monn=0 	inter=0 	err=0  
 
 	-- check for double spaces in dialogue
 	if res["doublespace"] and def==1 then
-		if visible:match("%s%s") then effect=effect.." [doble espacio" dspace=dspace+1 end
+		if visible:match("%s%s") then effect=effect.." [doble espacio]" dspace=dspace+1 end
 	end
 
 	-- check for double words
-	if res["doubleword"] and def==1 then
+	if def==1 then
 	visible2w=visible.."."
 	    for derp in visible2w:gmatch("%s%?([%w%s\']+)[%p]") do
 	    derp2=derp:gsub("^[%a\']+","")
@@ -521,7 +317,7 @@ tdura=0		tlength=0	tcps=0      mon=0 	tarta=0		mont=0 		monn=0 	inter=0 	err=0  
 	end
 
 	-- check for fucked up comments
-	if visible:match("[{}]") or text:match("}[^{]-}") or text:match("{[^}]-{") then comfail=comfail+1 effect=effect.." comentario jodido" end
+	if visible:match("[{}]") or text:match("}[^{]-}") or text:match("{[^}]-{") then comfail=comfail+1 effect=effect.." [comentario jodido]" end
 
 	-- check for bad italics - {\i1}   {\i1}
 	if res.failita and not text:match("\\r") then
@@ -545,10 +341,7 @@ tdura=0		tlength=0	tcps=0      mon=0 	tarta=0		mont=0 		monn=0 	inter=0 	err=0  
 	    if ll>=100 then effect=effect.." [dificil de leer]" ra=1 end
 	  end
 	  if cps>26 and cps<30 and ll<=30 then effect=effect.." [¿dificil de leer?]" ra=1 end
-	end
-	
-	if res.noread and def==1 and dura>50 and alfatime==0 and prevcleantxt~=cleantxt then	-- from here on, it's bad. rephrase/retime
-	  if cps>26 and cps<30 then
+    if cps>26 and cps<30 then
 	    if ll>30 and ll<=60 then effect=effect.." [imposible de leer]" ra=2 end
 	    if ll>60 then effect=effect.." [¡imposible de leer!]" ra=2 end
 	  end
@@ -557,10 +350,11 @@ tdura=0		tlength=0	tcps=0      mon=0 	tarta=0		mont=0 		monn=0 	inter=0 	err=0  
 	    if ll>30 and ll<=60 then effect=effect.." [¡imposible de leer!]" ra=2 end
 	    if ll>60 then effect=effect.." [¡¡imposible de leer!!]" ra=2 end
 	  end
-	  if cps>35 then effect=effect.." [¡¡NO LO LEE NI DIOS!!]" ra=2 end			-- timer and editor need to be punched
-	end
-	if ra==1 then readableh=readableh+1 end
-	if ra==2 then unreadable=unreadable+1 end
+	  if cps>35 then effect=effect.." [¡¡NO LO LEE NI DIOS!!]" ra=2 end
+    
+  if ra==1 then readableh=readableh+1 end
+  if ra==2 then unreadable=unreadable+1 end
+  end
 
 	-- check for double periods
 	if def==1 then
@@ -717,7 +511,7 @@ tdura=0		tlength=0	tcps=0      mon=0 	tarta=0		mont=0 		monn=0 	inter=0 	err=0  
     if mont~=0 then report=report.."Líneas con posibles monosilabos con tilde diacrítica... "..mont.."\n" end
     if monn~=0 then report=report.."Líneas con monosilabos que NUNCA llevan tilde... "..monn.."\n" end
     if tarta~=0 then report=report.."Líneas con tartamudeos chungos... "..tarta.."\n" end
-    if inter~=0 then report=report.."Líneas posibles pronombres interrogativos mal puestos... "..inter.."\n" end
+    if inter~=0 then report=report.."Líneas con posibles pronombres interrogativos mal puestos... "..inter.."\n" end
     if err~=0 then report=report.."Errores tontos varios... "..err.."\n" end
     if interr~=0 then report=report.."Signos sin abrir/cerrar... "..interr.."\n" end
     if dis~=0 then report=report.."Líneas con etiquetas inconexas... "..dis.."\n" end
@@ -813,26 +607,23 @@ function konfig(subs, sel)
 	{x=1,y=4,width=1,height=1,class="checkbox",name="bloped",label="Comprueba si falta difuminado en OP/ED",value=true},
 	
 	{x=1,y=5,width=1,height=1,class="checkbox",name="overlap",label="Comprueba si hay superposiciones/saltos/líneas de duración cero",value=true},
-	{x=1,y=6,width=1,height=1,class="checkbox",name="malformed",label="Comprueba si hay etiquetas malformadas - \\blur.5, \\alphaFF, \\\\",value=true},
-	{x=1,y=7,width=1,height=1,class="checkbox",name="disjointed",label="Comprueba si hay etiquetas inconexas - {\\tags...}{\\tags...}",value=true},
-	{x=1,y=8,width=1,height=1,class="checkbox",name="doublespace",label="Comprueba si hay dobles espacios en los dialogos",value=true},
-	{x=1,y=9,width=1,height=1,class="checkbox",name="doubleword",label="Comprueba si hay letras dobles en el dialogo",value=true},
-	{x=1,y=10,width=1,height=1,class="checkbox",name="read",label="Comprueba si hay líneas dificiles de leer",value=true},
-	{x=1,y=11,width=1,height=1,class="checkbox",name="noread",label="Comprueba si hay líneas imposibles de leer",value=true},
-	{x=1,y=12,width=1,height=1,class="checkbox",name="redundant",label="Comprueba si hay etiquetas redundantes",value=true},
-	{x=1,y=13,width=1,height=1,class="checkbox",name="failita",label="Comprueba si hay cursivas mal puestas",value=true},
-	{x=1,y=14,width=1,height=1,class="checkbox",name="mistyle",label="Comprueba si faltan estilos",value=true},
-	{x=1,y=15,width=1,height=1,class="checkbox",name="dlayer",label="Comprueba la capa de dialogo",value=true},
-	{x=1,y=16,width=1,height=1,class="checkbox",name="halfsec",label="Comprueba si hay líneas que duren menos de 0.5s",value=true},
-	{x=1,y=17,width=1,height=1,class="checkbox",name="monosilabosN",label="Comprueba si hay monosilabos que NUNCA llevan tilde",value=true},
-	{x=1,y=18,width=1,height=1,class="checkbox",name="tartamudeos",label="Comprueba si hay tartamudeos inconsistentes",value=true},
-	{x=1,y=19,width=1,height=1,class="checkbox",name="errores",label="Comprueba si hay algunos errores tontos comunes",value=true},
-	{x=1,y=20,width=1,height=1,class="checkbox",name="apertura",label="Comprueba si hay signos sin cerrar",value=true},
+	{x=1,y=6,width=1,height=1,class="checkbox",name="malformed",label="Comprueba si hay etiquetas malformadas/inconexas - \\blur.5, \\alphaFF, \\\\",value=true},
+	{x=1,y=7,width=1,height=1,class="checkbox",name="doublespace",label="Comprueba si hay dobles letras o espacios en los dialogos",value=true},
+	{x=1,y=8,width=1,height=1,class="checkbox",name="read",label="Comprueba si hay líneas dificiles de leer",value=true},
+	{x=1,y=9,width=1,height=1,class="checkbox",name="redundant",label="Comprueba si hay etiquetas redundantes",value=true},
+	{x=1,y=10,width=1,height=1,class="checkbox",name="failita",label="Comprueba si hay cursivas mal puestas",value=true},
+	{x=1,y=11,width=1,height=1,class="checkbox",name="mistyle",label="Comprueba si faltan estilos",value=true},
+	{x=1,y=12,width=1,height=1,class="checkbox",name="dlayer",label="Comprueba la capa de dialogo",value=true},
+	{x=1,y=13,width=1,height=1,class="checkbox",name="halfsec",label="Comprueba si hay líneas que duren menos de 0.5s",value=true},
+	{x=1,y=14,width=1,height=1,class="checkbox",name="monosilabosN",label="Comprueba si hay monosilabos que NUNCA llevan tilde",value=true},
+	{x=1,y=15,width=1,height=1,class="checkbox",name="tartamudeos",label="Comprueba si hay tartamudeos inconsistentes",value=true},
+	{x=1,y=16,width=1,height=1,class="checkbox",name="errores",label="Comprueba si hay algunos errores tontos comunes",value=true},
+	{x=1,y=17,width=1,height=1,class="checkbox",name="apertura",label="Comprueba si hay signos sin cerrar",value=true},
 
-	{x=1,y=22,width=1,height=1,class="label",label="Utilidades medio útiles que spamean la columna de efecto:",value=true},
-	{x=1,y=23,width=1,height=1,class="checkbox",name="monosilabos",label="Comprueba si hay posibles monosilabos sin tilde diacrítica",value=false},
-	{x=1,y=24,width=1,height=1,class="checkbox",name="monosilabost",label="Comprueba si hay posibles monosilabos con tilde diacrítica",value=false},
-	{x=1,y=25,width=1,height=1,class="checkbox",name="interrogativas",label="Comprueba si hay posibles pronombres interrogativos sin tilde",value=false},
+	{x=1,y=18,width=1,height=1,class="label",label="Utilidades medio útiles que spamean la columna de efecto:",value=true},
+	{x=1,y=19,width=1,height=1,class="checkbox",name="monosilabos",label="Comprueba si hay posibles monosilabos sin tilde diacrítica",value=false},
+	{x=1,y=20,width=1,height=1,class="checkbox",name="monosilabost",label="Comprueba si hay posibles monosilabos con tilde diacrítica",value=false},
+	{x=1,y=21,width=1,height=1,class="checkbox",name="interrogativas",label="Comprueba si hay posibles pronombres interrogativos sin tilde",value=false},
 
 	{x=2,y=1,width=2,height=1,class="label",label="Estadisticas inutiles..."},
 	{x=2,y=2,width=2,height=1,class="checkbox",name="italix",label="Cuenta el número de líneas con cursivas",value=false},
@@ -849,24 +640,24 @@ function konfig(subs, sel)
 	
 	{x=2,y=14,width=2,height=1,class="checkbox",name="fontcheck",label="Lista las fuentes usadas",value=false},
 	{x=2,y=15,width=2,height=1,class="checkbox",name="uselesstyle",label="Lista los estilos que no se usan",value=true},
-	--{x=2,y=16,width=2,height=1,class="checkbox",name="sauro",label="Count lines with faggosaurosis",value=true},
 	
-	{x=1,y=26,width=2,height=1,class="label",label=""},
-	{x=1,y=28,width=3,height=1,class="label",label="Este script es para ayudarte a ver fallos. Si lo estás usando como sustituto de un QC eres un idiota."},
+	--{x=1,y=26,width=2,height=1,class="label",label=""},
+	{x=1,y=23,width=2,height=1,class="label",label="Este script es para ayudarte a ver fallos. Si lo estás usando como sustituto de un QC eres un idiota."},
 	
 	}
-	buttons={">QC","Limpiar QC","Marcar todos","Que le den a esta mierda"}
+	buttons={">QC","Limpiar QC","Marcar todos","Quitar todos","Que le den a esta mierda"}
 	
 	repeat
-	    if pressed=="Marcar todos" then
+	    if pressed=="Marcar todos" or pressed=="Quitar todos" then
 		for key,val in ipairs(dialog_config) do
 		    if val.class=="checkbox" then
 			if pressed=="Marcar todos" then val.value=true end
+			if pressed=="Quitar todos" then val.value=false end
 		    end
 		end
 	    end
 	pressed,res=aegisub.dialog.display(dialog_config,buttons,{ok='>QC',cancel='Que le den a esta mierda'})
-	until pressed~="Marcar todos"
+	until pressed~="Marcar todos" and pressed~="Quitar todos"
 	
 	if pressed==">QC" or pressed=="Limpiar QC" then qc(subs, sel) end
 	if pressed=="Que le den a esta mierda" then aegisub.cancel() end
