@@ -238,7 +238,7 @@ tdura=0		tlength=0	tcps=0      mon=0 	tarta=0		mont=0 		monn=0 	inter=0 	err=0  
 
 	end	
 
-	-- busca errores varios
+	-- busca errores varios jaja saludos
 	if res["errores"] then
 
 		-- Error de "ex-" y "super-"
