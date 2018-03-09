@@ -255,7 +255,7 @@ tdura=0		tlength=0	tcps=0      mon=0 	tarta=0		mont=0 		monn=0 	inter=0 	err=0  
 
 	end
 
-	-- busca etiquetas malformadas o inconexas
+	-- busca etiquetas malformadas o inconexas o quizas algo masjhvahjskdnl
 	if res["malformed"] then
 	if text:match("{[^}]-\\\\[^}]-}")
 	or text:match("\\}")  
