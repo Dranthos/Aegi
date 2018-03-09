@@ -110,14 +110,14 @@ tdura=0		tlength=0	tcps=0      mon=0 	tarta=0		mont=0 		monn=0 	inter=0 	err=0  
 	rawcps=(linelen/dur)
 	cps=math.ceil(linelen/dur)
 
-	-- check if sorted by time
+	-- comprueba que esta ordenado por tiempo
 	if res["sorted"] then
 	if prevline.class=="dialogue" and start<prevstart then
 	    effect=effect.."...ordénalo por tiempo por favor" sorted=1
 	end	end
 
       if not line.comment and line.effect~="qcd" then
-	-- check for blur
+	-- busca difuminados
 	if res["blur"] and def==0 and visible~="" and not text:match("\\blur") and not text:match("\\be") and endt>0 then
 		if res.bloped then  
 		  effect=effect.."-FALTA DIFUMINADO-" mblur=mblur+1
